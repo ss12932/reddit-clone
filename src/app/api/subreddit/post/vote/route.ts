@@ -39,7 +39,7 @@ export async function PATCH(req: Request) {
     });
 
     if (!post) {
-      return new Response("Post not found", { status: 404 });
+      return new NextResponse("Post not found", { status: 404 });
     }
 
     if (existingVote) {
@@ -74,7 +74,7 @@ export async function PATCH(req: Request) {
           await redis.hset(`post:${postId}`, cachePayload); // Store the post data as a hash
         }
 
-        return new Response("OK");
+        return new NextResponse("OK");
       }
 
       // if vote type is different, update the vote
@@ -110,7 +110,7 @@ export async function PATCH(req: Request) {
         await redis.hset(`post:${postId}`, cachePayload); // Store the post data as a hash
       }
 
-      return new Response("OK");
+      return new NextResponse("OK");
     }
 
     // if no existing vote, create a new vote
@@ -123,13 +123,13 @@ export async function PATCH(req: Request) {
     });
 
     // Recount the votes
-    const votesAmt = post.votes.reduce((acc, vote) => {
+    const votesAmount = post.votes.reduce((acc, vote) => {
       if (vote.type === "UP") return acc + 1;
       if (vote.type === "DOWN") return acc - 1;
       return acc;
     }, 0);
 
-    if (votesAmt >= CACHE_AFTER_UPVOTES) {
+    if (votesAmount >= CACHE_AFTER_UPVOTES) {
       const cachePayload: CachedPost = {
         authorUsername: post.author.username ?? "",
         content: JSON.stringify(post.content),
@@ -142,14 +142,14 @@ export async function PATCH(req: Request) {
       await redis.hset(`post:${postId}`, cachePayload); // Store the post data as a hash
     }
 
-    return new Response("OK");
+    return new NextResponse("OK");
   } catch (error) {
     error;
     if (error instanceof z.ZodError) {
-      return new Response(error.message, { status: 400 });
+      return new NextResponse(error.message, { status: 400 });
     }
 
-    return new Response(
+    return new NextResponse(
       "Could not post to subreddit at this time. Please try later",
       { status: 500 }
     );
