@@ -1,4 +1,4 @@
-import Editor from "@/components/editor";
+import { Editor } from "@/components/editor";
 import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
