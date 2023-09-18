@@ -1,6 +1,7 @@
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { PostValidator } from "@/lib/validators/post";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 
 export async function POST(req: Request) {
@@ -42,7 +43,7 @@ export async function POST(req: Request) {
       return new Response(error.message, { status: 400 });
     }
 
-    return new Response(
+    return new NextResponse(
       "Could not post to subreddit at this time. Please try later",
       { status: 500 }
     );
