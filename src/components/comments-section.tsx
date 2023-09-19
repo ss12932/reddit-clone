@@ -70,7 +70,7 @@ const CommentsSection = async ({ postId }: CommentsSectionProps) => {
                   <PostComment
                     comment={topLevelComment}
                     currentVote={topLevelCommentVote}
-                    votesAmt={topLevelCommentVotesAmount}
+                    votesAmount={topLevelCommentVotesAmount}
                     postId={postId}
                   />
                 </div>
@@ -97,7 +97,7 @@ const CommentsSection = async ({ postId }: CommentsSectionProps) => {
                         <PostComment
                           comment={reply}
                           currentVote={replyVote}
-                          votesAmt={replyVotesAmount}
+                          votesAmount={replyVotesAmount}
                           postId={postId}
                         />
                       </div>

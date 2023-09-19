@@ -14,7 +14,7 @@ import UserAvatar from "@/components/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 
 type ExtendedComment = Comment & {
@@ -24,14 +24,14 @@ type ExtendedComment = Comment & {
 
 interface PostCommentProps {
   comment: ExtendedComment;
-  votesAmt: number;
+  votesAmount: number;
   currentVote: CommentVote | undefined;
   postId: string;
 }
 
 const PostComment: FC<PostCommentProps> = ({
   comment,
-  votesAmt,
+  votesAmount,
   currentVote,
   postId,
 }) => {
@@ -94,7 +94,7 @@ const PostComment: FC<PostCommentProps> = ({
       <div className="flex gap-2 items-center">
         <CommentVotes
           commentId={comment.id}
-          votesAmt={votesAmt}
+          votesAmount={votesAmount}
           currentVote={currentVote}
         />
 

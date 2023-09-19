@@ -1,7 +1,7 @@
 "use client";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { useCustomToasts } from "@/hooks/use-custom-toasts";
+import { useCustomToast } from "@/hooks/use-custom-toast";
 import { cn } from "@/lib/utils";
 import { CommentVoteRequest } from "@/lib/validators/vote";
 import { usePrevious } from "@mantine/hooks";
@@ -13,7 +13,7 @@ import { FC, useState } from "react";
 
 interface CommentVotesProps {
   commentId: string;
-  votesAmt: number;
+  votesAmount: number;
   currentVote?: PartialVote;
 }
 
@@ -21,11 +21,11 @@ type PartialVote = Pick<CommentVote, "type">;
 
 const CommentVotes: FC<CommentVotesProps> = ({
   commentId,
-  votesAmt: _votesAmt,
+  votesAmount: _votesAmount,
   currentVote: _currentVote,
 }) => {
-  const { loginToast } = useCustomToasts();
-  const [votesAmt, setVotesAmt] = useState<number>(_votesAmt);
+  const { loginToast } = useCustomToast();
+  const [votesAmount, setVotesAmount] = useState<number>(_votesAmount);
   const [currentVote, setCurrentVote] = useState<PartialVote | undefined>(
     _currentVote
   );
@@ -41,8 +41,8 @@ const CommentVotes: FC<CommentVotesProps> = ({
       await axios.patch("/api/subreddit/post/comment/vote", payload);
     },
     onError: (err, voteType) => {
-      if (voteType === "UP") setVotesAmt((prev) => prev - 1);
-      else setVotesAmt((prev) => prev + 1);
+      if (voteType === "UP") setVotesAmount((prev) => prev - 1);
+      else setVotesAmount((prev) => prev + 1);
 
       // reset current vote
       setCurrentVote(prevVote);
@@ -63,14 +63,15 @@ const CommentVotes: FC<CommentVotesProps> = ({
       if (currentVote?.type === type) {
         // User is voting the same way again, so remove their vote
         setCurrentVote(undefined);
-        if (type === "UP") setVotesAmt((prev) => prev - 1);
-        else if (type === "DOWN") setVotesAmt((prev) => prev + 1);
+        if (type === "UP") setVotesAmount((prev) => prev - 1);
+        else if (type === "DOWN") setVotesAmount((prev) => prev + 1);
       } else {
         // User is voting in the opposite direction, so subtract 2
         setCurrentVote({ type });
-        if (type === "UP") setVotesAmt((prev) => prev + (currentVote ? 2 : 1));
+        if (type === "UP")
+          setVotesAmount((prev) => prev + (currentVote ? 2 : 1));
         else if (type === "DOWN")
-          setVotesAmt((prev) => prev - (currentVote ? 2 : 1));
+          setVotesAmount((prev) => prev - (currentVote ? 2 : 1));
       }
     },
   });
@@ -93,7 +94,7 @@ const CommentVotes: FC<CommentVotesProps> = ({
 
       {/* score */}
       <p className="text-center py-2 px-1 font-medium text-xs text-zinc-900">
-        {votesAmt}
+        {votesAmount}
       </p>
 
       {/* downvote */}
