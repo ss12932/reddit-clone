@@ -91,7 +91,7 @@ const PostComment: FC<PostCommentProps> = ({
 
       <p className="text-sm text-zinc-900 mt-2">{comment.text}</p>
 
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center flex-wrap">
         <CommentVotes
           commentId={comment.id}
           votesAmount={votesAmount}
@@ -140,6 +140,7 @@ const PostComment: FC<PostCommentProps> = ({
               </Button>
               <Button
                 isLoading={isLoading}
+                disabled={input.length === 0}
                 onClick={() => {
                   if (!input) return;
                   postComment({
